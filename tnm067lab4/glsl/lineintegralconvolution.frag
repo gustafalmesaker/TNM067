@@ -1,8 +1,4 @@
 #include "utils/structs.glsl"
-
-uniform sampler2D vfColor;
-uniform sampler2D noiseColor;
-
 uniform sampler2D inport;
 uniform sampler2D noiseTexture;
 
@@ -26,13 +22,13 @@ void traverse(vec2 posF, float stepSize, int nSteps, inout float accVal, inout i
     // traverse the vectorfield staring at `posF` for `nSteps` using `stepSize` and sample the noiseColor texture for each position
     // store the accumulated value in `accVal` and the amount of samples in `nSamples`
 
-    vec2 position = posF;
+    vec2 currentPosition = posF;
 
-    for(int i = 0; i <= nSteps; i++){
-        position = posF + normalize(texture(vfColor, posF).xy) * i * stepSize;    
-        vec3 noise = texture(noiseColor, position).rgb;
+    for(int i = 0; i < nSteps; ++i){
+        vec2 currentDirection = normalize(texture(inport, currentPosition).xy);
+        currentPosition = (currentPosition + currentDirection * stepSize);
 
-        accVal += sqrt(noise.x * noise.x + noise.y * noise.y + noise.z * noise.z);
+        accVal = accVal + texture(noiseTexture, currentPosition).r;
         nSamples++;
     }
 }

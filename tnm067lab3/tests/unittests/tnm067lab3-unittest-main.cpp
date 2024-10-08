@@ -27,21 +27,40 @@
  *
  *********************************************************************************/
 
-#include <inviwo/tnm067lab4/tnm067lab4module.h>
-#include <inviwo/tnm067lab4/processors/lineintegralconvolution.h>
-#include <inviwo/tnm067lab4/processors/vectorfieldinformation.h>
-#include <modules/opengl/shader/shadermanager.h>
+#ifdef _MSC_VER
+#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+#include <vld.h>
+#endif
+#endif
 
-namespace inviwo {
+#include <inviwo/core/util/logcentral.h>
+#include <inviwo/core/util/consolelogger.h>
+#include <inviwo/testutil/configurablegtesteventlistener.h>
 
-TNM067lab4Module::TNM067lab4Module(InviwoApplication* app) : InviwoModule(app, "TNM067lab4") {
-    // Add a directory to the search path of the Shadermanager
-    ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
+#include <warn/push>
+#include <warn/ignore/all>
+#include <gtest/gtest.h>
+#include <warn/pop>
 
-    // Register objects that can be shared with the rest of inviwo here:
-    registerProcessor<LineIntegralConvolution>();
-    registerProcessor<VectorFieldInformation>();
+int main(int argc, char** argv) {
+    using namespace inviwo;
+    LogCentral::init();
+    auto logger = std::make_shared<ConsoleLogger>();
+    LogCentral::getPtr()->setVerbosity(LogVerbosity::Error);
+    LogCentral::getPtr()->registerLogger(logger);
+
+    int ret = -1;
+    {
+#ifdef IVW_ENABLE_MSVC_MEM_LEAK_TEST
+        VLDDisable();
+        ::testing::InitGoogleTest(&argc, argv);
+        VLDEnable();
+#else
+        ::testing::InitGoogleTest(&argc, argv);
+#endif
+        inviwo::ConfigurableGTestEventListener::setup();
+        ret = RUN_ALL_TESTS();
+    }
+    return ret;
 }
-
-}  // namespace inviwo
-

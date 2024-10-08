@@ -26,22 +26,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *********************************************************************************/
+#pragma once
 
-#include <inviwo/tnm067lab4/tnm067lab4module.h>
-#include <inviwo/tnm067lab4/processors/lineintegralconvolution.h>
-#include <inviwo/tnm067lab4/processors/vectorfieldinformation.h>
-#include <modules/opengl/shader/shadermanager.h>
+#include <inviwo/tnm067lab3/tnm067lab3moduledefine.h>
+#include <inviwo/core/common/inviwomodule.h>
 
 namespace inviwo {
 
-TNM067lab4Module::TNM067lab4Module(InviwoApplication* app) : InviwoModule(app, "TNM067lab4") {
-    // Add a directory to the search path of the Shadermanager
-    ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
-
-    // Register objects that can be shared with the rest of inviwo here:
-    registerProcessor<LineIntegralConvolution>();
-    registerProcessor<VectorFieldInformation>();
-}
+class IVW_MODULE_TNM067LAB3_API TNM067lab3Module : public InviwoModule {
+public:
+    TNM067lab3Module(InviwoApplication* app);
+    virtual ~TNM067lab3Module() = default;
+};
 
 }  // namespace inviwo
-

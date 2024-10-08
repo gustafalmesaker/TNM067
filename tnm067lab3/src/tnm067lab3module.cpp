@@ -27,21 +27,19 @@
  *
  *********************************************************************************/
 
-#include <inviwo/tnm067lab4/tnm067lab4module.h>
-#include <inviwo/tnm067lab4/processors/lineintegralconvolution.h>
-#include <inviwo/tnm067lab4/processors/vectorfieldinformation.h>
-#include <modules/opengl/shader/shadermanager.h>
+#include <inviwo/tnm067lab3/tnm067lab3module.h>
+#include <inviwo/tnm067lab3/processors/marchingtetrahedra.h>
 
 namespace inviwo {
 
-TNM067lab4Module::TNM067lab4Module(InviwoApplication* app) : InviwoModule(app, "TNM067lab4") {
+TNM067lab3Module::TNM067lab3Module(InviwoApplication* app) : InviwoModule(app, "TNM067lab3") {
     // Add a directory to the search path of the Shadermanager
-    ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
+    // ShaderManager::getPtr()->addShaderSearchPath(getPath(ModulePath::GLSL));
 
     // Register objects that can be shared with the rest of inviwo here:
-    registerProcessor<LineIntegralConvolution>();
-    registerProcessor<VectorFieldInformation>();
+
+    // Processors
+    registerProcessor<MarchingTetrahedra>();
 }
 
 }  // namespace inviwo
-
